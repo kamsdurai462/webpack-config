@@ -1,9 +1,20 @@
+const path = require('path');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const SOURCE_ROOT = `${__dirname}/src/`;
 let mode = "development";
 if(process.env.NODE_ENV === "production"){
     mode = "production";
 };
 module.exports = {
-   module:{
+    entry :{
+        bundle: SOURCE_ROOT + 'index.js',
+    },
+    output: {
+        path: path.resolve(__dirname,'dist'),
+        filename: 'js/[name].js',
+    },
+    module:{
         rules:[
             {
                 test:/\.js$/,
@@ -13,7 +24,11 @@ module.exports = {
                 }
             },
         ],
-   }, 
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+    ],
     mode: 'development',
     devtool : "source-map",
     devServer: {
