@@ -1,13 +1,20 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-const miniCssExtractPlugin = "mini-css-extract-plugin";
-
+const path = require('path');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const SOURCE_ROOT = `${__dirname}/src/`;
 let mode = "development";
 if(process.env.NODE_ENV === "production"){
     mode = "production";
 };
 module.exports = {
-   module:{
+    entry :{
+        bundle: SOURCE_ROOT + 'index.js',
+    },
+    output: {
+        path: path.resolve(__dirname,'dist'),
+        filename: 'js/[name].js',
+    },
+    module:{
         rules:[
             {
                 test:/\.css$/i,
@@ -21,8 +28,11 @@ module.exports = {
                 },
             },
         ],
-   }, 
-   plugins : [new MiniCssExtractPlugin()],
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+    ],
     mode: 'development',
     devtool : "source-map",
     devServer: {
